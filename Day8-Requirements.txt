@@ -1,0 +1,6 @@
+Students create a file called:
+requirements.txt
+with:
+streamlit
+tensorflow
+numpy
