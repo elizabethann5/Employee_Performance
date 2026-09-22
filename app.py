@@ -2,29 +2,21 @@ import streamlit as st
 import numpy as np
 import tensorflow as tf
 
-
-# Page title
 st.set_page_config(
     page_title="Employee Performance Predictor",
     page_icon="📊"
 )
 
-
-# App heading
 st.title("📊 Employee Performance Predictor")
 
 st.write(
     "Enter Training Hours and Attendance to predict employee performance."
 )
 
-
-# Load trained ANN model
 model = tf.keras.models.load_model(
     "employee_performance_ann.keras"
 )
 
-
-# Training Hours input
 training_hours = st.number_input(
     "Training Hours",
     min_value=0.0,
@@ -33,8 +25,6 @@ training_hours = st.number_input(
     step=1.0
 )
 
-
-# Attendance input
 attendance = st.number_input(
     "Attendance (%)",
     min_value=0.0,
@@ -43,29 +33,23 @@ attendance = st.number_input(
     step=1.0
 )
 
-
-# Prediction button
 if st.button("Predict Performance"):
 
-    # Prepare input for ANN
-    input_data = np.array([
-        [training_hours, attendance]
-    ], dtype=float)
+    input_data = np.array(
+        [[training_hours, attendance]],
+        dtype=float
+    )
 
-    # Get prediction
     probability = model.predict(
         input_data,
         verbose=0
     )[0][0]
 
-    # Convert probability to result
     if probability >= 0.5:
         result = "Good"
     else:
         result = "Needs Improvement"
 
-
-    # Display result
     st.subheader("Prediction Result")
 
     if result == "Good":
@@ -73,22 +57,11 @@ if st.button("Predict Performance"):
     else:
         st.warning("Performance: NEEDS IMPROVEMENT")
 
-
-    # Display probability
     st.write(
         "Good Probability:",
         round(float(probability) * 100, 2),
         "%"
     )
 
-    # Display entered values
-    st.write(
-        "Training Hours:",
-        training_hours
-    )
-
-    st.write(
-        "Attendance:",
-        attendance,
-        "%"
-    )
+    st.write("Training Hours:", training_hours)
+    st.write("Attendance:", attendance, "%")
